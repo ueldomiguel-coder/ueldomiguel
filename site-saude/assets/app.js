@@ -59,10 +59,12 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") toggle(false
 // ---- Simulação de acesso restrito (somente demonstração; não protege nada de verdade) ----
 const $ = id => document.getElementById(id);
 const KEY_LIST = "rvs_emails", KEY_SESSION = "rvs_sessao", ADMIN_PASS = "admin";
+const mem = (() => { try { return JSON.parse(window.name || "{}") || {}; } catch(e){ return {}; } })();
+const flush = () => { try { window.name = JSON.stringify(mem); } catch(e){} };
 const store = {
-  get(k, s){ try { return (s ? sessionStorage : localStorage).getItem(k); } catch(e){ return null; } },
-  set(k, v, s){ try { (s ? sessionStorage : localStorage).setItem(k, v); } catch(e){} },
-  del(k, s){ try { (s ? sessionStorage : localStorage).removeItem(k); } catch(e){} }
+  get(k, s){ try { const v = (s ? sessionStorage : localStorage).getItem(k); if (v !== null) return v; } catch(e){} return k in mem ? mem[k] : null; },
+  set(k, v, s){ mem[k] = v; flush(); try { (s ? sessionStorage : localStorage).setItem(k, v); } catch(e){} },
+  del(k, s){ delete mem[k]; flush(); try { (s ? sessionStorage : localStorage).removeItem(k); } catch(e){} }
 };
 const getList = () => { try { const l = JSON.parse(store.get(KEY_LIST)); if (Array.isArray(l) && l.length) return l; } catch(e){} return ["ueldomiguel@gmail.com"]; };
 const saveList = l => store.set(KEY_LIST, JSON.stringify(l));
@@ -93,8 +95,6 @@ $("admLogin").addEventListener("submit", e => { e.preventDefault();
 $("admAdd").addEventListener("submit", e => { e.preventDefault(); const m = $("admMail").value.trim().toLowerCase(), l = getList();
   if (m && !l.includes(m)) { l.push(m); saveList(l); renderAdmin(); } $("admMail").value = ""; });
 document.addEventListener("keydown", e => { if (e.key === "Escape") modal.hidden = true; });
-const atual = store.get(KEY_SESSION, true);
-if (atual && getList().includes(atual)) mostrar(atual); else root.classList.add("locked");
 
 // Copiar e-mail de contato
 const cp = document.getElementById("copyMail");
@@ -160,3 +160,7 @@ $("accDemo").addEventListener("click", () => {
 $("accClear").addEventListener("click", () => { saveAcc([]); registrado = false; renderAcc(); });
 // ao abrir o painel após a senha, mostrar a aba de acessos
 $("admLogin").addEventListener("submit", () => { setTimeout(() => { if (!$("admPanel").hidden) renderAcc(); }, 0); });
+
+// Restaura a sessão só depois que todo o código acima foi inicializado
+const atual = store.get(KEY_SESSION, true);
+if (atual && getList().includes(atual)) mostrar(atual); else root.classList.add("locked");

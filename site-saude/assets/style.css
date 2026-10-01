@@ -74,9 +74,9 @@ html.locked .topbar,html.locked .layout,html.locked .foot{display:none}
 .gate{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,var(--blue) 0%,var(--blue-dark) 100%)}
 html.locked .gate{display:flex}
 .gate-card{width:min(480px,100%);background:var(--card);border-radius:20px;padding:32px clamp(20px,5vw,36px);box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.gate-logo{height:64px;width:auto;max-width:100%;display:block;margin-bottom:18px;background:var(--logo-bg);border-radius:8px}
-.gate h1{margin:0 0 6px;font-size:clamp(18px,4.6vw,22px);text-transform:uppercase;color:var(--heading);line-height:1.2}
-.gate-sub{margin:0 0 14px;color:var(--muted);font-size:14px}
+.gate-logo{height:64px;width:auto;max-width:100%;display:block;margin:0 auto 18px;background:var(--logo-bg);border-radius:8px}
+.gate h1{text-align:center;margin:0 0 6px;font-size:clamp(18px,4.6vw,22px);text-transform:uppercase;color:var(--heading);line-height:1.2}
+.gate-sub{text-align:center;margin:0 0 14px;color:var(--muted);font-size:14px}
 .demo-note{background:#fff6dc;color:#5c4400;border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:16px}
 .acct{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;cursor:pointer}
 .acct:hover{border-color:var(--blue);background:var(--blue-soft)}
@@ -209,3 +209,8 @@ input[type=email],input[type=password]{flex:1;min-width:0;font:inherit;font-size
 .last .w{color:var(--muted);font-variant-numeric:tabular-nums}.last .u,.last .p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .acc-actions{margin-top:16px;flex-wrap:wrap}
 @media (max-width:640px){.two{grid-template-columns:1fr}.last li{grid-template-columns:1fr}}
+
+.gallery{grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr))}
+.gallery figure.poster{align-self:start}
+.gallery figure.poster img{max-height:460px}
+.gallery figure.poster a{cursor:zoom-in}

@@ -12,10 +12,11 @@ SITE = 'https://sites.google.com/view/saudecachoeirinha'
 SITE_NAME = 'Repositório Virtual - Saúde - Cachoeirinha'
 
 # ---------------------------------------------------------------- textos
-ACRONYMS = {'ACS','APAE','CEC','DAB','DP','SAE','UPA','TI','IPM','NUMESC','GERCON','PCD','SMS','VISAT','HTLV','RN','PNI','SUS','ESF','UBS',
-            'CAIC','COHAB','AIH','CNES','APS','SAM','CID','DST','HIV','HPV','TB','PSE','CAPS','CRAS','CREAS','NASF','EMULTI','COVID-19','COVID','SINAN',
-            'SISREG','SIM','SINASC','PEC','PNAB','TSH','T4','NS1','IST','ISTS','AME','CEO','ECG','USG','RX','SIA','SIH','LGPD','POP','POPS','PAI'}
-SPECIAL = {'ESUS': 'eSUS', 'EMULTI': 'eMulti', 'POPS': 'POPs', '24H': '24h', 'MPOX': 'Mpox', 'COVID-19': 'COVID-19', 'DANTS': 'DANTs'}
+ACRONYMS = set("""AB ABS ACS AD AG AIDS AIH APAE APS BAAR BVS CAB CAPS CD CDS CEC CEO CER CEVS CGICI CGZV CIAP CNES COREN COVID CP CRIE DAB DAPPS DDA DEDT DFD DIU
+DNPM DORT DP DPNI DPS DST DTM DVE DVRT EEI EP ESF ETP FTA GAL GERCON GTIM HB HBV HCV HIV HPJ HTLV ICOM ICOPE IGHAR II III IV IJ ILPI IOS IPI IPM IST ISTS IVCF LFN LT MDDA
+MEEM MG MS MSD NASF NR NS NUMESC ODIL OPAS OPM PAIR PAI PCD PCDT PCR PEC PEP PNAB PNAR PNI POP POPS PPD PSE RAPS RN RS SAE SAM SAR SCPA SES SI SIPNI SISCAN SMS SNAP SOAP SUS SVSA DSTS
+TARV TEA TI TR TSH UBS UPA VDRL VI VISAT B C D F I J M N R S T W X LGPD CRM CFM CRO DATASUS INCA ESAVI EAPV HGT IM SINAN SISAB""".split())
+SPECIAL = {'ESUS': 'eSUS', 'E-SUS': 'e-SUS', 'EMULTI': 'eMulti', 'POPS': 'POPs', '24H': '24h', 'MPOX': 'Mpox', 'DANTS': 'DANTs', 'IOS': 'iOS', 'HBSAG': 'HBsAg', 'E-MAIL': 'e-mail', 'EMAIL': 'e-mail'}
 SMALL = {'a','o','as','os','e','de','da','do','das','dos','em','na','no','nas','nos','para','por','com','sem','ao','aos','à','às','um','uma','ou','que','pela','pelo','pelas','pelos','se'}
 
 def smart_title(t):
@@ -27,10 +28,15 @@ def smart_title(t):
         m = re.match(r'^([^\wÀ-ÿ]*)(.*?)([^\wÀ-ÿ]*)$', w, re.S)
         pre, core, post = m.groups()
         u = core.upper()
+        prev = ''.join(out).lower().rstrip()
         if u in SPECIAL: c = SPECIAL[u]
-        elif u in ACRONYMS or re.fullmatch(r'[IVX]{1,4}', u) or any(ch.isdigit() for ch in u) or ('-' in u and u.split('-')[0] in ACRONYMS): c = u
+        elif len(core) == 1 and re.search(r'(hepatite|vitamina|tipo|grupo|classe|fase|anexo|vírus|virus)$', prev): c = u
         elif core.lower() in SMALL and out: c = core.lower()
-        elif len(core) == 1 and out and re.search(r'(hepatite|vitamina|tipo|grupo|classe|fase|anexo)\s*$', ''.join(out).lower()): c = u
+        elif '/' in core and all(x.lower() in SMALL for x in core.split('/')) and out: c = core.lower()
+        elif u in ACRONYMS or re.fullmatch(r'[IVX]{1,4}', u) or any(ch.isdigit() for ch in u): c = u
+        elif '(' in pre and ')' in post and len(core) <= 6: c = u
+        elif '/' in core and all(len(x) <= 5 for x in core.split('/')) and not any(x.lower() in SMALL for x in core.split('/')): c = u
+        elif '-' in core and all(x.upper() in ACRONYMS or any(ch.isdigit() for ch in x) for x in core.split('-')): c = u
         else: c = core.lower().capitalize() if '-' not in core else '-'.join(x.capitalize() for x in core.lower().split('-'))
         out.append(pre + c + post)
     return ''.join(out)
@@ -180,6 +186,7 @@ TOPICS = [
  (r'planilha|painel|indicador|dashboard|relatorio|previne|estatistic|grafico|monitoramento|looker', 'chart', 'blue'),
  (r'cirurgi|ambulatorio|curativo|ortoped|traumat|tala\b|enfermagem|medicina|clinic|sae\b|especialidade', 'cross', 'red'),
  (r'diarre|agua|hidrata', 'drop', 'blue'),
+ (r'cardio|hipertens|infarto|\bavc\b|pressao arterial', 'heart', 'red'),
  (r'checklist|check.list|protocolo|\bpops?\b|procedimento operacional|diretriz|linha de cuidado|orienta|rotina|criterio', 'checklist', 'blue'),
  (r'ficha|notifica|investiga|sinan|formulario|solicita|requisi|termo|modelo', 'clip', 'orange'),
  (r'cartilha|caderno|guia|manual|livro|apostila|material|cartaz|folder|infograf', 'book', 'purple'),
@@ -230,8 +237,10 @@ def split_cells(raw): return [c.strip() for c in re.split(r'\t+|[  ]{2,}', raw.
 def render_blocks(blocks, slug):
     out, i, n = [], 0, len(blocks)
     sec_open = False
+    cur = {'t': ''}
     def open_sec(title=None):
         nonlocal sec_open
+        cur['t'] = title or ''
         if sec_open: out.append('</div></section>')
         out.append('<section class="sec">' + (f'<h2>{esc(smart_title(title))}</h2>' if title else '') + '<div class="sec-body">'); sec_open = True
     open_sec()
@@ -245,20 +254,25 @@ def render_blocks(blocks, slug):
         nxt = blocks[i + 1] if i + 1 < n else None
         if t in ('img', 'imglink') and nxt and nxt['t'] == 'btn' and not gallery:
             cards.append(card(nxt['text'], nxt['href'])); i += 2; continue
+        if t == 'imglink' and nxt and nxt['t'] == 'p' and len(nxt['text']) <= 60 and not gallery and not b['href'].startswith('#'):
+            cards.append(card(nxt['text'], b['href'])); i += 2; continue
         if t == 'btn':
             if gallery: flush()
             cards.append(card(b['text'], b['href'])); i += 1; continue
         if t == 'video':
             if gallery: flush()
-            cards.append(card('Assistir vídeo no YouTube', b['href'], k='play')); i += 1; continue
+            cards.append(card(('Vídeo - ' + smart_title(cur['t'])) if cur['t'] else 'Assistir vídeo no YouTube', b['href'], k='play')); i += 1; continue
         if t in ('img', 'imglink'):
             if cards: flush()
             im = image(b['tok'])
             if im:
-                tag = f'<img src="{im[0]}" width="{im[1]}" height="{im[2]}" alt="{esc(b.get("alt", ""))}" loading="lazy" decoding="async">'
+                tag = f'<img src="{im[0]}" width="{im[1]}" height="{im[2]}" alt="{esc(b.get("alt") or "Imagem informativa")}" loading="lazy" decoding="async">'
+                poster = im[1] >= 500
                 if t == 'imglink':
                     h = b['href']; tag = f'<a href="{esc(href_of(h), quote=True)}"{attrs_of(h)} aria-label="Abrir">{tag}</a>'
-                gallery.append(f'<figure>{tag}</figure>')
+                elif poster:
+                    tag = f'<a href="{im[0]}" target="_blank" rel="noopener" aria-label="Ampliar imagem">{tag}</a>'
+                gallery.append(f'<figure{" class=poster" if poster else ""}>{tag}</figure>')
             i += 1; continue
         flush()
         if t == 'h':
@@ -273,6 +287,8 @@ def render_blocks(blocks, slug):
                 body = ''.join('<tr>' + ''.join(f'<td>{esc(c)}</td>' for c in r + [''] * (w - len(r))) + '</tr>' for r in rows[1:])
                 out.append(f'<div class="tbl"><table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>'); i = j; continue
             txt = b['text']
+            if (not b['bold']) and len(txt) <= 40 and nxt and nxt['t'] in ('btn', 'imglink') and sum(c.isupper() for c in txt if c.isalpha()) >= .7 * max(1, sum(c.isalpha() for c in txt)) and not re.search(r'\d{4}[- ]?\d{4}', txt):
+                open_sec(txt); i += 1; continue
             if b['bold'] and re.search(r'[A-Za-zÀ-ú]{3}', txt) and not re.search(r'\d{4}[- ]?\d{4}', txt) and not txt.startswith('#'):
                 open_sec(txt); i += 1; continue
             cls = ' class="note"' if re.search(r'\d{4}[- ]?\d{4}', txt) else ''
