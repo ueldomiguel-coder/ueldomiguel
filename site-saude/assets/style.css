@@ -3,7 +3,7 @@
   --blue:#0A4394; --blue-dark:#093C85; --blue-soft:#E6ECF4; --blue-tint:rgba(10,67,148,.10);
   --ink:#212121; --muted:#6A6A6A; --line:#DCE3EE; --bg:#F6F8FB; --card:#fff;
   --radius:14px; --shadow:0 1px 2px rgba(10,67,148,.06),0 6px 20px rgba(10,67,148,.07);
-  --side:290px; --panel:#fff; --link:#0A4394; --nav-ink:#33415c; --nav-hover:#E6ECF4; --icon:#0A4394; --about-ink:#33415c; --about-h:#093C85; --logo-bg:transparent; --heading:#0A4394; --cta-from:#0A4394; --cta-to:#0B56C0; --art-bg:#f3f3f3; --hero-glow:rgba(10,67,148,.08); --top:96px;
+  --side:290px; --panel:#fff; --link:#0A4394; --nav-ink:#33415c; --nav-hover:#E6ECF4; --icon:#0A4394; --about-ink:#33415c; --about-h:#093C85; --logo-bg:transparent; --heading:#0A4394; --cta-from:#062a63; --cta-to:#1f7ae8; --art-bg:#f3f3f3; --hero-glow:rgba(10,67,148,.08); --top:96px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -61,8 +61,8 @@ section[aria-labelledby="docs-h"]{margin-top:28px}
   .topbar{flex-wrap:wrap;height:auto;padding:8px 16px;gap:6px 12px}
   .brand img{height:46px}
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e8edf5;--muted:#9aa8bd;--line:#26334a;--bg:#0d1523;--card:#142036;--blue-soft:#17263f;--blue-tint:rgba(110,160,235,.14);--panel:#101b2e;--link:#8db4f0;--nav-ink:#c5d0e2;--nav-hover:#17263f;--icon:#8db4f0;--about-ink:#c5d0e2;--about-h:#9cc0f5;--logo-bg:#fff;--heading:#8db4f0;--cta-from:#1d5fc4;--cta-to:#3a7be0;--art-bg:#f3f3f3;--hero-glow:rgba(110,160,235,.10);color-scheme:dark;}}
-:root[data-theme="dark"]{--ink:#e8edf5;--muted:#9aa8bd;--line:#26334a;--bg:#0d1523;--card:#142036;--blue-soft:#17263f;--blue-tint:rgba(110,160,235,.14);--panel:#101b2e;--link:#8db4f0;--nav-ink:#c5d0e2;--nav-hover:#17263f;--icon:#8db4f0;--about-ink:#c5d0e2;--about-h:#9cc0f5;--logo-bg:#fff;--heading:#8db4f0;--cta-from:#1d5fc4;--cta-to:#3a7be0;--art-bg:#f3f3f3;--hero-glow:rgba(110,160,235,.10);color-scheme:dark;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e8edf5;--muted:#9aa8bd;--line:#26334a;--bg:#0d1523;--card:#142036;--blue-soft:#17263f;--blue-tint:rgba(110,160,235,.14);--panel:#101b2e;--link:#8db4f0;--nav-ink:#c5d0e2;--nav-hover:#17263f;--icon:#8db4f0;--about-ink:#c5d0e2;--about-h:#9cc0f5;--logo-bg:#fff;--heading:#8db4f0;--cta-from:#123f94;--cta-to:#58a0ff;--art-bg:#f3f3f3;--hero-glow:rgba(110,160,235,.10);color-scheme:dark;}}
+:root[data-theme="dark"]{--ink:#e8edf5;--muted:#9aa8bd;--line:#26334a;--bg:#0d1523;--card:#142036;--blue-soft:#17263f;--blue-tint:rgba(110,160,235,.14);--panel:#101b2e;--link:#8db4f0;--nav-ink:#c5d0e2;--nav-hover:#17263f;--icon:#8db4f0;--about-ink:#c5d0e2;--about-h:#9cc0f5;--logo-bg:#fff;--heading:#8db4f0;--cta-from:#123f94;--cta-to:#58a0ff;--art-bg:#f3f3f3;--hero-glow:rgba(110,160,235,.10);color-scheme:dark;}
 
 .user{display:flex;align-items:center;gap:8px;flex:none}
 .who{margin:18px 12px 0;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);word-break:break-all}.who strong{color:var(--ink);font-weight:600}
@@ -103,7 +103,7 @@ input[type=email],input[type=password]{flex:1;min-width:0;font:inherit;font-size
 .hero-text{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px;padding:clamp(22px,3vw,40px)}
 .hero h1{margin:0;font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;color:var(--heading)}
 .hero p{margin:0;max-width:62ch;color:var(--about-ink);font-size:16px}
-.cta{display:inline-flex;align-items:center;gap:12px;margin-top:8px;padding:14px 20px;border-radius:14px;background:linear-gradient(135deg,var(--cta-from),var(--cta-to));color:#fff;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 6px 18px rgba(10,67,148,.28);transition:transform .15s,box-shadow .15s}
+.cta{display:inline-flex;align-items:center;gap:12px;margin-top:8px;padding:14px 20px;border-radius:14px;background:linear-gradient(100deg,var(--cta-from) 0%,var(--cta-to) 100%);color:#fff;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 6px 18px rgba(10,67,148,.28);transition:transform .15s,box-shadow .15s}
 .cta:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(10,67,148,.36)}
 .cta svg{flex:none}.cta .go{opacity:.85}
 .about{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(16px,3vw,40px);margin-top:24px;padding:clamp(20px,2.6vw,32px);background:var(--card);border:1px solid var(--line);border-radius:20px}
