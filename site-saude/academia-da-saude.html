@@ -49,7 +49,7 @@
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
   </button>
   <a class="brand" href="#" aria-label="Prefeitura de Cachoeirinha">
-    <img src="assets/img/logo-horizontal.png" alt="Prefeitura de Cachoeirinha">
+    <img src="assets/img/logo-horizontal.png" width="900" height="201" alt="Prefeitura de Cachoeirinha" decoding="async">
   </a>
   <p class="site-title">Repositório Virtual - Saúde - Cachoeirinha</p>
   <div class="user" id="userBox" hidden>
@@ -76,39 +76,34 @@
     </nav>
 
     <section class="hero">
-      <img class="hero-img" src="assets/img/academia-da-saude.jpg" alt="Logotipo da Academia da Saúde">
+      <div class="hero-art"><img src="assets/img/academia-da-saude.jpg" width="1416" height="555" alt="Logotipo da Academia da Saúde" decoding="async"></div>
       <div class="hero-text">
-        <span class="chip">Setor</span>
         <h1>Academia da Saúde</h1>
         <p>Documentos e materiais de referência do programa Academia da Saúde, reunidos para consulta pela rede de atenção à saúde de Cachoeirinha.</p>
-      </div>
-    </section>
-
-    <section aria-labelledby="docs-h">
-      <h2 id="docs-h" class="sr-only">Documentos</h2>
-      <div class="cards">
-        <a class="doc" href="https://drive.google.com/file/d/1IjvUJ9psY6-lLT3Q5Ycqv9hGNYmZLg5t/view?usp=sharing" target="_blank" rel="noopener">
-          <span class="doc-icon" aria-hidden="true">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
-          </span>
-          <span class="doc-body">
-            <strong>Guia de Atividade Física para a População Brasileira</strong>
-          </span>
-          <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        <a class="cta" href="https://drive.google.com/file/d/1IjvUJ9psY6-lLT3Q5Ycqv9hGNYmZLg5t/view?usp=sharing" target="_blank" rel="noopener">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+          <span>Guia de Atividade Física para a População Brasileira</span>
+          <svg class="go" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </a>
       </div>
     </section>
 
-    <aside class="about">
-      <h3>Sobre este repositório</h3>
-      <p>Este repositório tem por objetivo informar, reunir, preservar, divulgar e garantir o acesso confiável e permanente aos documentos administrativos, técnicos, fluxos, protocolos, linhas de cuidado, entre outros documentos que se julguem relevantes para a rede de atenção à saúde de Cachoeirinha.</p>
-      <p>Caso seja identificado algum arquivo que não esteja em conformidade, informe nossa equipe pelo e-mail
-        <a href="mailto:repositoriosaudecachoeirinha@gmail.com">repositoriosaudecachoeirinha@gmail.com</a> para que a situação seja regularizada.</p>
+    <aside class="about" aria-labelledby="sobre-h">
+      <div class="about-text">
+        <h2 id="sobre-h">Sobre este repositório</h2>
+        <p>Este repositório tem por objetivo informar, reunir, preservar, divulgar e garantir o acesso confiável e permanente aos documentos administrativos, técnicos, fluxos, protocolos, linhas de cuidado, entre outros documentos que se julguem relevantes para a rede de atenção à saúde de Cachoeirinha.</p>
+      </div>
+      <div class="about-contact">
+        <h3>Arquivo fora de conformidade?</h3>
+        <p>Avise nossa equipe para que a situação seja regularizada.</p>
+        <a class="mail" href="mailto:repositoriosaudecachoeirinha@gmail.com">repositoriosaudecachoeirinha@gmail.com</a>
+        <button type="button" class="btn ghost" id="copyMail" data-mail="repositoriosaudecachoeirinha@gmail.com">Copiar e-mail</button>
+      </div>
     </aside>
   </main>
 </div>
 
-<footer class="foot"><img src="assets/img/brasao.png" alt="Brasão de Cachoeirinha"><span>Repositório Virtual - Saúde - Cachoeirinha · Secretaria Municipal de Saúde</span></footer>
+<footer class="foot"><img src="assets/img/brasao.png" width="360" height="338" alt="Brasão de Cachoeirinha" loading="lazy" decoding="async"><span>Repositório Virtual - Saúde - Cachoeirinha · Secretaria Municipal de Saúde</span></footer>
 <div class="scrim" id="scrim" hidden></div>
 <script src="assets/app.js"></script>
 </body>

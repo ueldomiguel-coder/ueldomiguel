@@ -72,3 +72,12 @@ $("admAdd").addEventListener("submit", e => { e.preventDefault(); const m = $("a
 document.addEventListener("keydown", e => { if (e.key === "Escape") modal.hidden = true; });
 const atual = store.get(KEY_SESSION, true);
 if (atual && getList().includes(atual)) mostrar(atual); else root.classList.add("locked");
+
+// Copiar e-mail de contato
+const cp = document.getElementById("copyMail");
+if (cp) cp.addEventListener("click", async () => {
+  const t = cp.dataset.mail, old = cp.textContent;
+  try { await navigator.clipboard.writeText(t); cp.textContent = "E-mail copiado"; }
+  catch (e) { const r = document.createRange(), el = document.querySelector(".mail"); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); cp.textContent = "Selecionado: use Ctrl+C"; }
+  setTimeout(() => cp.textContent = old, 2200);
+});
