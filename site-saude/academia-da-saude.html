@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="locked">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +8,40 @@
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <img src="assets/img/logo-horizontal.png" alt="Prefeitura de Cachoeirinha" class="gate-logo">
+    <h1>Repositório Virtual - Saúde - Cachoeirinha</h1>
+    <p class="gate-sub">Acesso restrito a servidores. Entre com a conta Google cadastrada.</p>
+    <div class="demo-note"><strong>Simulação.</strong> Nenhuma senha ou conta do Google é enviada. A proteção real será feita no servidor.</div>
+    <div id="chooser">
+      <button type="button" class="acct" data-mail="ueldomiguel@gmail.com">
+        <span class="avatar">U</span><span><strong>ueldomiguel@gmail.com</strong><small>Conta Google</small></span>
+      </button>
+      <form id="otherForm" class="other" autocomplete="off">
+        <label for="otherMail">Usar outra conta</label>
+        <div class="row"><input id="otherMail" type="email" placeholder="seuemail@gmail.com" required><button class="btn" type="submit">Entrar</button></div>
+      </form>
+    </div>
+    <p class="gate-err" id="gateErr" role="alert" hidden></p>
+  </div>
+</div>
+<div class="modal" id="adminModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="admH">
+    <button type="button" class="x" id="admClose" aria-label="Fechar">×</button>
+    <h2 id="admH">Administração</h2>
+    <form id="admLogin">
+      <label for="admPass">Senha de administrador</label>
+      <div class="row"><input id="admPass" type="password" autocomplete="off" required><button class="btn" type="submit">Entrar</button></div>
+      <p class="gate-err" id="admErr" role="alert" hidden>Senha incorreta.</p>
+    </form>
+    <div id="admPanel" hidden>
+      <p class="hint">E-mails autorizados a entrar no site. Esta lista é salva apenas neste navegador, na simulação.</p>
+      <form id="admAdd" class="row"><input id="admMail" type="email" placeholder="novo.servidor@gmail.com" required aria-label="Novo e-mail"><button class="btn" type="submit">Adicionar</button></form>
+      <ul class="mails" id="admList"></ul>
+    </div>
+  </div>
+</div>
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
 
 <header class="topbar">
@@ -18,17 +52,22 @@
     <img src="assets/img/logo-horizontal.png" alt="Prefeitura de Cachoeirinha">
   </a>
   <p class="site-title">Repositório Virtual - Saúde - Cachoeirinha</p>
-  <label class="search">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <input id="search" type="search" placeholder="Buscar setor…" autocomplete="off">
-  </label>
+  <div class="user" id="userBox" hidden>
+    <button type="button" class="btn ghost" id="adminBtn">Administração</button>
+    <button type="button" class="btn ghost" id="logoutBtn">Sair</button>
+  </div>
 </header>
 
 <div class="layout">
   <nav class="sidebar" id="sidebar" aria-label="Setores">
+        <label class="search">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="search" type="search" placeholder="Buscar setor…" autocomplete="off">
+  </label>
     <div class="nav-title">Setores</div>
     <ul id="navList"></ul>
     <p class="nav-empty" id="navEmpty" hidden>Nenhum setor encontrado.</p>
+    <p class="who">Conectado como<br><strong id="userMail"></strong></p>
   </nav>
 
   <main id="conteudo">
