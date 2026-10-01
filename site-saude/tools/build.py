@@ -47,7 +47,7 @@ files, used = {}, {'index'}
 for n in NAVSRC:
     s = n['slug']
     if s == 'tela-inicial': continue
-    if s == HOME: files[s] = 'index.html'; continue
+    if s == HOME: files[s] = 'inicio.html'; continue
     base = ascii_slug(s.split('/')[-1]) or 'pagina'
     name = base; k = 2
     while name in used: name = f'{base}-{k}'; k += 1
@@ -307,7 +307,7 @@ ABOUT = '''<aside class="about" aria-labelledby="sobre-h">
 
 def crumbs(slug):
     if slug == HOME: return ''
-    parts = [f'<a href="index.html">Início</a>']
+    parts = [f'<a href="{files[HOME]}">Início</a>']
     segs = slug.split('/')
     for k in range(2, len(segs)):
         a = '/'.join(segs[:k])
@@ -343,6 +343,8 @@ def page_html(slug):
 
 # ---------------------------------------------------------------- saída
 for s in order: open(os.path.join(OUT, files[s]), 'w', encoding='utf-8').write(page_html(s))
+# cópia da página inicial como index.html (hospedagem comum); no protótipo do Claude, index.html é reservado
+open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(page_html(HOME))
 
 nav = [{'s': s, 't': ('Início' if s == HOME else title_of(s)), 'h': files[s], 'd': depth(s)} for s in order]
 search, seen = [], set()
