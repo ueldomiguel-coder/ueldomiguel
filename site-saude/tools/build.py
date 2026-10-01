@@ -307,6 +307,7 @@ def render_blocks(blocks, slug):
     return re.sub(r'<section class="sec"><div class="sec-body"></div></section>', '', res)
 
 # ---------------------------------------------------------------- páginas
+LOGO_ART = {'início/academia-da-saúde'}  # imagens que são logotipos: não cortar
 DESCR = {'início/academia-da-saúde': 'Documentos e materiais de referência do programa Academia da Saúde.'}
 ABOUT = '''<aside class="about" aria-labelledby="sobre-h">
       <div class="about-text">
@@ -333,13 +334,13 @@ def crumbs(slug):
 
 def build_main(slug):
     p = P[slug]; blocks = p['blocks']; title = title_of(slug)
-    hdr = image(p['header'], 900) if p.get('header') else None
+    hdr = ('assets/img/academia-da-saude.jpg', 1416, 555) if slug in LOGO_ART else (image(p['header'], 900) if p.get('header') else None)
     only_btn = [b for b in blocks if b['t'] != 'btn']
     cta = ''
     if len(blocks) == 1 and blocks[0]['t'] == 'btn' and not children[slug]:
         b = blocks[0]; cta = f'<a class="cta" href="{esc(href_of(b["href"]), quote=True)}"{attrs_of(b["href"])}>{icon(topic(b["text"], b["href"])[0])}<span>{esc(smart_title(b["text"]))}</span>{ARROW}</a>'
         blocks = []
-    art = (f'<div class="hero-art"><img src="{hdr[0]}" width="{hdr[1]}" height="{hdr[2]}" alt="" decoding="async"></div>' if hdr else '')
+    art = (f'<div class="hero-art{" logo" if slug in LOGO_ART else ""}"><img src="{hdr[0]}" width="{hdr[1]}" height="{hdr[2]}" alt="" decoding="async"></div>' if hdr else '')
     descr = f'<p>{esc(DESCR[slug])}</p>' if slug in DESCR else ''
     hero = f'<section class="hero{"" if hdr else " no-art"}">{art}<div class="hero-text"><h1>{esc(title)}</h1>{descr}{cta}</div></section>'
     sub = ''
