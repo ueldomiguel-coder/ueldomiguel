@@ -114,3 +114,6 @@ input[type=email],input[type=password]{flex:1;min-width:0;font:inherit;font-size
 .mails button{background:none;border:0;color:#b3261e;cursor:pointer;font:inherit;font-size:13px}
 
 @media (max-width:600px){.doc-body strong{white-space:normal}}
+.doc{position:relative;justify-content:center}
+.doc-body{flex:0 1 auto;text-align:center}
+.arrow{position:absolute;right:20px;top:50%;transform:translateY(-50%)}
