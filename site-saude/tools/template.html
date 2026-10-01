@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR" class="locked">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="{{SLUG}}">
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <img src="assets/img/logo-horizontal.png" alt="Prefeitura de Cachoeirinha" class="gate-logo">
+    <h1>Repositório Virtual - Saúde - Cachoeirinha</h1>
+    <p class="gate-sub">Acesso restrito a servidores. Entre com a conta Google cadastrada.</p>
+    <div class="demo-note"><strong>Simulação.</strong> Nenhuma senha ou conta do Google é enviada. A proteção real será feita no servidor.</div>
+    <div id="chooser">
+      <button type="button" class="acct" data-mail="ueldomiguel@gmail.com">
+        <span class="avatar">U</span><span><strong>ueldomiguel@gmail.com</strong><small>Conta Google</small></span>
+      </button>
+      <form id="otherForm" class="other" autocomplete="off">
+        <label for="otherMail">Usar outra conta</label>
+        <div class="row"><input id="otherMail" type="email" placeholder="seuemail@gmail.com" required><button class="btn" type="submit">Entrar</button></div>
+      </form>
+    </div>
+    <p class="gate-err" id="gateErr" role="alert" hidden></p>
+  </div>
+</div>
+<div class="modal" id="adminModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="admH">
+    <button type="button" class="x" id="admClose" aria-label="Fechar">×</button>
+    <h2 id="admH">Administração</h2>
+    <form id="admLogin">
+      <label for="admPass">Senha de administrador</label>
+      <div class="row"><input id="admPass" type="password" autocomplete="off" required><button class="btn" type="submit">Entrar</button></div>
+      <p class="gate-err" id="admErr" role="alert" hidden>Senha incorreta.</p>
+    </form>
+    <div id="admPanel" hidden>
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab on" role="tab" id="tabAcc" aria-selected="true" aria-controls="paneAcc" data-pane="paneAcc">Acessos</button>
+        <button type="button" class="tab" role="tab" id="tabMail" aria-selected="false" aria-controls="paneMail" data-pane="paneMail">E-mails autorizados</button>
+      </div>
+      <div id="paneAcc" role="tabpanel" aria-labelledby="tabAcc">
+        <div class="stats" id="accStats"></div>
+        <h3 class="sub">Acessos por dia (últimos 14 dias)</h3>
+        <div class="bars" id="accBars" role="img" aria-label="Gráfico de acessos por dia"></div>
+        <div class="two">
+          <div><h3 class="sub">Páginas mais acessadas</h3><ol class="rank" id="accPages"></ol></div>
+          <div><h3 class="sub">Acessos por servidor</h3><ol class="rank" id="accUsers"></ol></div>
+        </div>
+        <h3 class="sub">Últimos acessos</h3>
+        <ul class="last" id="accLast"></ul>
+        <div class="row acc-actions">
+          <button type="button" class="btn ghost" id="accDemo">Simular acessos de exemplo</button>
+          <button type="button" class="btn ghost" id="accClear">Zerar contagem</button>
+        </div>
+        <p class="hint">Simulação: a contagem é registrada apenas neste navegador. Na versão publicada, os acessos serão gravados no servidor e somados para todos os servidores.</p>
+      </div>
+      <div id="paneMail" role="tabpanel" aria-labelledby="tabMail" hidden>
+        <p class="hint">E-mails autorizados a entrar no site. Esta lista é salva apenas neste navegador, na simulação.</p>
+        <form id="admAdd" class="row"><input id="admMail" type="email" placeholder="novo.servidor@gmail.com" required aria-label="Novo e-mail"><button class="btn" type="submit">Adicionar</button></form>
+        <ul class="mails" id="admList"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <a class="brand" href="index.html" aria-label="Prefeitura de Cachoeirinha">
+    <img src="assets/img/logo-horizontal.png" width="900" height="201" alt="Prefeitura de Cachoeirinha" decoding="async">
+  </a>
+  <p class="site-title">Repositório Virtual - Saúde - Cachoeirinha</p>
+  <div class="user" id="userBox" hidden>
+    <button type="button" class="btn ghost" id="adminBtn">Administração</button>
+    <button type="button" class="btn ghost" id="logoutBtn">Sair</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="Setores">
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="Buscar setor ou documento…" autocomplete="off" aria-label="Buscar setor ou documento">
+    </label>
+    <div id="navWrap">
+      <div class="nav-title">Setores</div>
+      <ul id="navList" class="tree"></ul>
+    </div>
+    <div id="results" hidden></div>
+    <p class="who">Conectado como<br><strong id="userMail"></strong></p>
+  </nav>
+
+  {{MAIN}}
+</div>
+
+<footer class="foot"><img src="assets/img/brasao.png" width="360" height="338" alt="Brasão de Cachoeirinha" loading="lazy" decoding="async"><span>Repositório Virtual - Saúde - Cachoeirinha · Secretaria Municipal de Saúde</span></footer>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/nav.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
