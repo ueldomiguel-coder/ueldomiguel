@@ -12,17 +12,15 @@
 
 <header class="topbar">
   <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
   </button>
-  <a class="brand" href="#">
-    <span class="brand-mark" aria-hidden="true">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-    </span>
-    <span class="brand-text"><strong>Repositório Virtual</strong><small>Saúde · Cachoeirinha</small></span>
+  <a class="brand" href="#" aria-label="Prefeitura de Cachoeirinha">
+    <img src="assets/img/logo-horizontal.png" alt="Prefeitura de Cachoeirinha">
   </a>
+  <p class="site-title">Repositório Virtual - Saúde - Cachoeirinha</p>
   <label class="search">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <input id="search" type="search" placeholder="Buscar setor ou documento…" autocomplete="off">
+    <input id="search" type="search" placeholder="Buscar setor…" autocomplete="off">
   </label>
 </header>
 
@@ -39,9 +37,12 @@
     </nav>
 
     <section class="hero">
-      <span class="chip">Setor</span>
-      <h1>Academia da Saúde</h1>
-      <p>Documentos e materiais de referência do programa Academia da Saúde, reunidos para consulta pela rede de atenção à saúde de Cachoeirinha.</p>
+      <img class="hero-img" src="assets/img/academia-da-saude.jpg" alt="Logotipo da Academia da Saúde">
+      <div class="hero-text">
+        <span class="chip">Setor</span>
+        <h1>Academia da Saúde</h1>
+        <p>Documentos e materiais de referência do programa Academia da Saúde, reunidos para consulta pela rede de atenção à saúde de Cachoeirinha.</p>
+      </div>
     </section>
 
     <section aria-labelledby="docs-h">
@@ -69,7 +70,7 @@
   </main>
 </div>
 
-<footer class="foot">Repositório Virtual – Saúde · Secretaria Municipal de Saúde de Cachoeirinha</footer>
+<footer class="foot"><img src="assets/img/brasao.png" alt="Brasão de Cachoeirinha"><span>Repositório Virtual - Saúde - Cachoeirinha · Secretaria Municipal de Saúde</span></footer>
 <div class="scrim" id="scrim" hidden></div>
 <script src="assets/app.js"></script>
 </body>
