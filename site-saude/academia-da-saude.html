@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Academia da Saúde · Repositório Virtual – Saúde Cachoeirinha</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <a class="brand" href="#">
+    <span class="brand-mark" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </span>
+    <span class="brand-text"><strong>Repositório Virtual</strong><small>Saúde · Cachoeirinha</small></span>
+  </a>
+  <label class="search">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="search" type="search" placeholder="Buscar setor ou documento…" autocomplete="off">
+  </label>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="Setores">
+    <div class="nav-title">Setores</div>
+    <ul id="navList"></ul>
+    <p class="nav-empty" id="navEmpty" hidden>Nenhum setor encontrado.</p>
+  </nav>
+
+  <main id="conteudo">
+    <nav class="crumbs" aria-label="Você está em">
+      <a href="#">Início</a><span>/</span><span aria-current="page">Academia da Saúde</span>
+    </nav>
+
+    <section class="hero">
+      <span class="chip">Setor</span>
+      <h1>Academia da Saúde</h1>
+      <p>Documentos e materiais de referência do programa Academia da Saúde, reunidos para consulta pela rede de atenção à saúde de Cachoeirinha.</p>
+    </section>
+
+    <section aria-labelledby="docs-h">
+      <h2 id="docs-h">Documentos</h2>
+      <div class="cards">
+        <a class="doc" href="https://drive.google.com/file/d/1IjvUJ9psY6-lLT3Q5Ycqv9hGNYmZLg5t/view?usp=sharing" target="_blank" rel="noopener">
+          <span class="doc-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+          </span>
+          <span class="doc-body">
+            <strong>Guia de Atividade Física para a População Brasileira</strong>
+            <small>PDF · abre no Google Drive</small>
+          </span>
+          <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <aside class="about">
+      <h3>Sobre este repositório</h3>
+      <p>Este repositório tem por objetivo informar, reunir, preservar, divulgar e garantir o acesso confiável e permanente aos documentos administrativos, técnicos, fluxos, protocolos, linhas de cuidado, entre outros documentos que se julguem relevantes para a rede de atenção à saúde de Cachoeirinha.</p>
+      <p>Caso seja identificado algum arquivo que não esteja em conformidade, informe nossa equipe pelo e-mail
+        <a href="mailto:repositoriosaudecachoeirinha@gmail.com">repositoriosaudecachoeirinha@gmail.com</a> para que a situação seja regularizada.</p>
+    </aside>
+  </main>
+</div>
+
+<footer class="foot">Repositório Virtual – Saúde · Secretaria Municipal de Saúde de Cachoeirinha</footer>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/app.js"></script>
+</body>
+</html>
