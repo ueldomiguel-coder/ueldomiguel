@@ -307,7 +307,10 @@ def render_blocks(blocks, slug):
     return re.sub(r'<section class="sec"><div class="sec-body"></div></section>', '', res)
 
 # ---------------------------------------------------------------- páginas
-LOGO_ART = {'início/academia-da-saúde'}  # imagens que são logotipos: não cortar
+LOGO_ART = {'início/academia-da-saúde'}  # usa o recorte limpo do logotipo (sem as faixas cinza da captura original)
+# posição do enquadramento de cada imagem de cabeçalho, copiada do Google Sites original
+HEADPOS = json.load(open(os.path.join(HERE, 'header-positions.json')))
+POS_CSS = {'center center': 'center', 'top center': 'center top', 'bottom center': 'center bottom', 'center right': 'right center', 'center left': 'left center'}
 DESCR = {'início/academia-da-saúde': 'Documentos e materiais de referência do programa Academia da Saúde.'}
 ABOUT = '''<aside class="about" aria-labelledby="sobre-h">
       <div class="about-text">
@@ -340,7 +343,9 @@ def build_main(slug):
     if len(blocks) == 1 and blocks[0]['t'] == 'btn' and not children[slug]:
         b = blocks[0]; cta = f'<a class="cta" href="{esc(href_of(b["href"]), quote=True)}"{attrs_of(b["href"])}>{icon(topic(b["text"], b["href"])[0])}<span>{esc(smart_title(b["text"]))}</span>{ARROW}</a>'
         blocks = []
-    art = (f'<div class="hero-art{" logo" if slug in LOGO_ART else ""}"><img src="{hdr[0]}" width="{hdr[1]}" height="{hdr[2]}" alt="" decoding="async"></div>' if hdr else '')
+    pos = POS_CSS.get((HEADPOS.get(slug) or {}).get('pos') or 'center center', 'center')
+    st = f' style="object-position:{pos}"' if pos != 'center' else ''
+    art = (f'<div class="hero-art"><img src="{hdr[0]}" width="{hdr[1]}" height="{hdr[2]}" alt=""{st} decoding="async"></div>' if hdr else '')
     descr = f'<p>{esc(DESCR[slug])}</p>' if slug in DESCR else ''
     hero = f'<section class="hero{"" if hdr else " no-art"}">{art}<div class="hero-text"><h1>{esc(title)}</h1>{descr}{cta}</div></section>'
     sub = ''
