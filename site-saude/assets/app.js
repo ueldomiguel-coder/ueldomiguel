@@ -1,9 +1,19 @@
 // Menu lateral (árvore com grupos) e busca por setores e documentos.
 // Os dados vêm de assets/nav.js (gerado por tools/build.py).
+const mem = (() => { try { return JSON.parse(window.name || "{}") || {}; } catch(e){ return {}; } })();
+const flush = () => { try { window.name = JSON.stringify(mem); } catch(e){} };
+const store = {
+  get(k, s){ try { const v = (s ? sessionStorage : localStorage).getItem(k); if (v !== null) return v; } catch(e){} return k in mem ? mem[k] : null; },
+  set(k, v, s){ mem[k] = v; flush(); try { (s ? sessionStorage : localStorage).setItem(k, v); } catch(e){} },
+  del(k, s){ delete mem[k]; flush(); try { (s ? sessionStorage : localStorage).removeItem(k); } catch(e){} }
+};
 const NAV = window.NAV || [], SEARCH = window.SEARCH || [];
 const SLUG = document.body.dataset.slug;
 const norm = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt) e.textContent = txt; return e; };
+
+const openSet = () => { try { return JSON.parse(store.get("rvs_nav_open", true)) || []; } catch(e){ return []; } };
+const saveOpen = (s, o) => { const l = openSet().filter(x => x !== s); if (o) l.push(s); store.set("rvs_nav_open", JSON.stringify(l), true); };
 
 function buildTree() {
   const root = document.getElementById("navList");
@@ -19,15 +29,31 @@ function buildTree() {
       const ul = el("ul"), b = el("button", "tog"); b.type = "button"; b.setAttribute("aria-label", "Expandir " + it.t);
       b.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>';
       row.appendChild(b); li.appendChild(ul); li.classList.add("grp");
-      const open = SLUG === it.s || SLUG.startsWith(it.s + "/");
+      const open = SLUG === it.s || SLUG.startsWith(it.s + "/") || openSet().includes(it.s);
       li.classList.toggle("open", open); b.setAttribute("aria-expanded", open);
-      b.addEventListener("click", () => { const o = li.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+      b.addEventListener("click", () => { const o = li.classList.toggle("open"); b.setAttribute("aria-expanded", o); saveOpen(it.s, o); });
       stack.push({ d: it.d, ul });
     }
   });
-  const cur = root.querySelector("[aria-current]"); if (cur) cur.scrollIntoView({ block: "center" });
 }
 buildTree();
+
+// Mantém a posição do menu lateral ao trocar de página (cada página é um arquivo separado).
+// A rolagem só pode ser aplicada depois que o site é liberado pelo login (antes, o menu está oculto).
+let navRestored = false;
+function restoreNav() {
+  const sb = document.getElementById("sidebar"); if (!sb || navRestored) return; navRestored = true;
+  const saved = store.get("rvs_nav_scroll", true);
+  if (saved !== null && !isNaN(+saved)) sb.scrollTop = +saved;
+  else { const cur = sb.querySelector("[aria-current]"); if (cur) { const r = cur.getBoundingClientRect(), s = sb.getBoundingClientRect(); if (r.top < s.top || r.bottom > s.bottom) sb.scrollTop = cur.offsetTop - sb.clientHeight / 2; } }
+}
+(function listenSidebarScroll() {
+  const sb = document.getElementById("sidebar"); if (!sb) return;
+  const save = () => { if (navRestored) store.set("rvs_nav_scroll", String(sb.scrollTop), true); };
+  sb.addEventListener("scroll", save, { passive: true });
+  window.addEventListener("pagehide", save);
+  sb.addEventListener("click", save, true);
+})();
 
 const input = document.getElementById("search"), wrap = document.getElementById("navWrap"), results = document.getElementById("results");
 const LABEL = { file: "Documento", folder: "Pasta", form: "Formulário", chart: "Painel", play: "Vídeo", cal: "Agenda", link: "Link", phone: "Telefone" };
@@ -59,13 +85,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") toggle(false
 // ---- Simulação de acesso restrito (somente demonstração; não protege nada de verdade) ----
 const $ = id => document.getElementById(id);
 const KEY_LIST = "rvs_emails", KEY_SESSION = "rvs_sessao", ADMIN_PASS = "admin";
-const mem = (() => { try { return JSON.parse(window.name || "{}") || {}; } catch(e){ return {}; } })();
-const flush = () => { try { window.name = JSON.stringify(mem); } catch(e){} };
-const store = {
-  get(k, s){ try { const v = (s ? sessionStorage : localStorage).getItem(k); if (v !== null) return v; } catch(e){} return k in mem ? mem[k] : null; },
-  set(k, v, s){ mem[k] = v; flush(); try { (s ? sessionStorage : localStorage).setItem(k, v); } catch(e){} },
-  del(k, s){ delete mem[k]; flush(); try { (s ? sessionStorage : localStorage).removeItem(k); } catch(e){} }
-};
+
 const getList = () => { try { const l = JSON.parse(store.get(KEY_LIST)); if (Array.isArray(l) && l.length) return l; } catch(e){} return ["ueldomiguel@gmail.com"]; };
 const saveList = l => store.set(KEY_LIST, JSON.stringify(l));
 const root = document.documentElement;
@@ -74,7 +94,7 @@ function entrar(mail){
   if (!getList().includes(mail)) { const e = $("gateErr"); e.textContent = "Acesso não autorizado: " + mail + " não está na lista de servidores."; e.hidden = false; return; }
   store.set(KEY_SESSION, mail, true); mostrar(mail);
 }
-function mostrar(mail){ registrar(mail); root.classList.remove("locked"); $("userBox").hidden = false; $("userMail").textContent = mail; $("gateErr").hidden = true; }
+function mostrar(mail){ registrar(mail); root.classList.remove("locked"); restoreNav(); $("userBox").hidden = false; $("userMail").textContent = mail; $("gateErr").hidden = true; }
 function sair(){ store.del(KEY_SESSION, true); root.classList.add("locked"); $("userBox").hidden = true; }
 document.querySelectorAll(".acct").forEach(b => b.addEventListener("click", () => entrar(b.dataset.mail)));
 $("otherForm").addEventListener("submit", e => { e.preventDefault(); entrar($("otherMail").value); });
