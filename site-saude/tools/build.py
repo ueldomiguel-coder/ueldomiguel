@@ -4,7 +4,7 @@ import re, json, html, os, sys, unicodedata, urllib.parse
 from PIL import Image
 
 PAGES_JSON, RAW, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
-D = json.load(open(PAGES_JSON))
+D = json.load(open(PAGES_JSON))  # saída de extract.py
 P, NAVSRC = D['pages'], D['nav']
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = open(os.path.join(HERE, 'template.html'), encoding='utf-8').read()
@@ -234,6 +234,36 @@ def card(text, href, thumb=None, k=None):
 
 def split_cells(raw): return [c.strip() for c in re.split(r'\t+|[  ]{2,}', raw.strip()) if c.strip()]
 
+
+def render_imgrow(row):
+    """Linha de imagens com as mesmas colunas (grade de 12) do Google Sites."""
+    cols = []
+    for col in row['cols']:
+        bl, parts, k = col['blocks'], [], 0
+        while k < len(bl):
+            x = bl[k]; t = x['t']
+            if t in ('img', 'imglink'):
+                im = image(x['tok'])
+                cap = ''
+                if k + 1 < len(bl) and bl[k + 1]['t'] == 'p' and len(bl[k + 1]['text']) <= 80:
+                    cap = f'<figcaption>{esc(bl[k + 1]["text"])}</figcaption>'; k += 1
+                if im:
+                    tag = f'<img src="{im[0]}" width="{im[1]}" height="{im[2]}" style="max-width:{im[1]}px" alt="{esc(x.get("alt") or "Imagem informativa")}" loading="lazy" decoding="async">'
+                    if t == 'imglink':
+                        h = x['href']; tag = f'<a href="{esc(href_of(h), quote=True)}"{attrs_of(h)}>{tag}{cap}</a>'; cap = ''
+                    elif im[1] >= 500:
+                        tag = f'<a href="{im[0]}" target="_blank" rel="noopener" aria-label="Ampliar imagem">{tag}</a>'
+                    parts.append(f'<figure>{tag}{cap}</figure>')
+            elif t == 'btn': parts.append(card(x['text'], x['href']))
+            elif t == 'video': parts.append(card('Assistir vídeo no YouTube', x['href'], k='play'))
+            elif t == 'p': parts.append(f'<p>{fix_inline(x["html"])}</p>')
+            elif t == 'h': parts.append(f'<h3>{esc(smart_title(x["text"]))}</h3>')
+            elif t == 'list': parts.append('<ul>' + ''.join(f'<li>{fix_inline(i)}</li>' for i in x['items']) + '</ul>')
+            k += 1
+        sp = '' if parts else ' sp'
+        cols.append(f'<div class="ic{sp}" style="grid-column:span {col["w"]}"{" aria-hidden=true" if sp else ""}>{"".join(parts)}</div>')
+    return '<div class="imgrow">' + ''.join(cols) + '</div>'
+
 def render_blocks(blocks, slug):
     out, i, n = [], 0, len(blocks)
     sec_open = False
@@ -252,6 +282,8 @@ def render_blocks(blocks, slug):
     while i < n:
         b = blocks[i]; t = b['t']
         nxt = blocks[i + 1] if i + 1 < n else None
+        if t == 'imgrow':
+            flush(); out.append(render_imgrow(b)); i += 1; continue
         if t in ('img', 'imglink') and nxt and nxt['t'] == 'btn' and not gallery:
             cards.append(card(nxt['text'], nxt['href'])); i += 2; continue
         if t == 'imglink' and nxt and nxt['t'] == 'p' and len(nxt['text']) <= 60 and not gallery and not b['href'].startswith('#'):
@@ -380,7 +412,8 @@ open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(page_html(HOM
 nav = [{'s': s, 't': ('Início' if s == HOME else title_of(s)), 'h': files[s], 'd': depth(s)} for s in order]
 search, seen = [], set()
 for s in order:
-    for b in P[s]['blocks']:
+    flat = [y for x in P[s]['blocks'] for y in (sum((c['blocks'] for c in x['cols']), []) if x['t'] == 'imgrow' else [x])]
+    for b in flat:
         if b['t'] == 'btn' and not b['href'].startswith('page:'):
             key = (b['text'], b['href'])
             if key in seen: continue

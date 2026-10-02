@@ -245,3 +245,19 @@ input[type=email],input[type=password]{flex:1;min-width:0;font:inherit;font-size
 .gallery figure.poster img{max-height:640px}
 .gallery a{display:grid;place-items:center;width:100%}
 @media (max-width:600px){.gallery figure,.gallery figure.poster{flex-basis:100%}.gallery img{max-height:300px}.gallery figure.poster img{max-height:560px}}
+
+/* Linhas de imagens na grade de 12 colunas do Google Sites */
+.imgrow{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(8px,1.6vw,22px);row-gap:12px;align-items:center;margin:6px 0 18px}
+.imgrow .ic{min-width:0;text-align:center}
+.imgrow figure{margin:0;display:grid;justify-items:center;gap:8px}
+.imgrow img{display:block;width:100%;height:auto;margin-inline:auto;border-radius:10px}
+.imgrow a{display:block;color:inherit;text-decoration:none}
+.imgrow a[href]:hover img{box-shadow:var(--shadow)}
+.imgrow figcaption{font-weight:700;font-size:15px;color:var(--heading);text-transform:uppercase;letter-spacing:.02em}
+.imgrow .ic p,.imgrow .ic h3{margin:6px 0}
+.imgrow .ic .docc{text-align:left}
+@media (max-width:700px){
+  .imgrow{display:flex;flex-wrap:wrap;justify-content:center}
+  .imgrow .ic{flex:1 1 200px;max-width:100%}
+  .imgrow .ic.sp{display:none}
+}
