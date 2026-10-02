@@ -312,7 +312,7 @@ def render_blocks(blocks, slug):
         i += 1
     flush()
     out.append('</div></section>')
-    res = ''.join(out)
+    res = ''.join(out).replace('</ul><ul>', '').replace('</ol><ol>', '')  # listas quebradas no original viram uma só
     return re.sub(r'<section class="sec"><div class="sec-body"></div></section>', '', res)
 
 # ---------------------------------------------------------------- páginas

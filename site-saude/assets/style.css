@@ -233,6 +233,6 @@ input[type=email],input[type=password]{flex:1;min-width:0;font:inherit;font-size
 .hero-art.logo::after{background:radial-gradient(900px 300px at 100% 0%,var(--hero-glow),transparent 70%),linear-gradient(90deg,rgba(var(--veil),.97) 0%,rgba(var(--veil),.9) 38%,rgba(var(--veil),0) 68%)}
 
 /* Zoom das imagens de cabeçalho: mesma proporção da faixa do Google Sites (cerca de 1240 x 310 px no computador, 250 px de altura no celular) */
-.hero:not(.no-art){aspect-ratio:1240/310;min-height:250px}
-.hero:not(.no-art) .hero-text{min-height:0;height:100%}
-@media (max-width:860px){.hero:not(.no-art){aspect-ratio:auto;min-height:250px}}
+.hero:not(.no-art){min-height:250px}
+.hero:not(.no-art) .hero-text{min-height:250px;height:100%}
+@media (min-width:1300px){.hero:not(.no-art){aspect-ratio:1240/310;min-height:0}.hero:not(.no-art) .hero-text{min-height:220px}}
