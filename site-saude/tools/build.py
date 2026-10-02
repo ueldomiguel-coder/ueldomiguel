@@ -287,6 +287,10 @@ def render_blocks(blocks, slug):
                     if len(r) > hw:
                         k = next((x for x, c in enumerate(r) if ph.search(c)), None)
                         if k and k > 1: r[:k] = [' '.join(r[:k])]
+                for r in rows[1:]:   # nome e telefone colados por um só espaço (ex.: "... IDOSA 3041-7194")
+                    if len(r) < hw:
+                        m = re.match(r'^(.*?\S)\s+((?:\(?\d{2}\)?\s?)?\d{4}\s?-?\s?\d{4}.*)$', r[0])
+                        if m and not ph.fullmatch(r[0].strip()): r[0:1] = [m.group(1), m.group(2)]
                 w = max(len(r) for r in rows)
                 head = ''.join(f'<th>{esc(smart_title(c))}</th>' for c in rows[0] + [''] * (w - len(rows[0])))
                 body = ''.join('<tr>' + ''.join(f'<td>{esc(c)}</td>' for c in r + [''] * (w - len(r))) + '</tr>' for r in rows[1:])
