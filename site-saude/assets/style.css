@@ -236,3 +236,12 @@ input[type=email],input[type=password]{flex:1;min-width:0;font:inherit;font-size
 .hero:not(.no-art){min-height:250px}
 .hero:not(.no-art) .hero-text{min-height:250px;height:100%}
 @media (min-width:1300px){.hero:not(.no-art){aspect-ratio:1240/310;min-height:0}.hero:not(.no-art) .hero-text{min-height:220px}}
+
+/* Imagens soltas (logotipos, pôsteres): maiores e centralizadas */
+.gallery{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:18px;margin:6px 0 16px}
+.gallery figure{flex:0 1 300px;min-width:0;padding:18px;display:grid;place-items:center}
+.gallery figure.poster{flex:0 1 460px}
+.gallery img{width:auto;max-width:100%;max-height:260px;margin-inline:auto}
+.gallery figure.poster img{max-height:640px}
+.gallery a{display:grid;place-items:center;width:100%}
+@media (max-width:600px){.gallery figure,.gallery figure.poster{flex-basis:100%}.gallery img{max-height:300px}.gallery figure.poster img{max-height:560px}}

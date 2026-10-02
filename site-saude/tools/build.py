@@ -267,7 +267,7 @@ def render_blocks(blocks, slug):
             im = image(b['tok'])
             if im:
                 tag = f'<img src="{im[0]}" width="{im[1]}" height="{im[2]}" alt="{esc(b.get("alt") or "Imagem informativa")}" loading="lazy" decoding="async">'
-                poster = im[1] >= 500
+                poster = im[1] >= 500 and t != 'imglink'  # logotipos com link ficam em tamanho médio; pôsteres abrem ampliados
                 if t == 'imglink':
                     h = b['href']; tag = f'<a href="{esc(href_of(h), quote=True)}"{attrs_of(h)} aria-label="Abrir">{tag}</a>'
                 elif poster:
