@@ -282,6 +282,11 @@ def render_blocks(blocks, slug):
             j = i; rows = []
             while j < n and blocks[j]['t'] == 'p' and len(split_cells(blocks[j]['raw'])) >= 2: rows.append(split_cells(blocks[j]['raw'])); j += 1
             if len(rows) >= 3:
+                hw = len(rows[0]); ph = re.compile(r'\d{4}\s?-?\s?\d{4}')
+                for r in rows[1:]:   # nome com espaço duplo (ex.: "CAPS  IJ") vira uma célula só
+                    if len(r) > hw:
+                        k = next((x for x, c in enumerate(r) if ph.search(c)), None)
+                        if k and k > 1: r[:k] = [' '.join(r[:k])]
                 w = max(len(r) for r in rows)
                 head = ''.join(f'<th>{esc(smart_title(c))}</th>' for c in rows[0] + [''] * (w - len(rows[0])))
                 body = ''.join('<tr>' + ''.join(f'<td>{esc(c)}</td>' for c in r + [''] * (w - len(r))) + '</tr>' for r in rows[1:])
